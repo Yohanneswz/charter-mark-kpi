@@ -1,5 +1,11 @@
 # FDRE Sovereign GovTech: QR-Based "Charter Mark" Citizen Feedback & Civil Servant KPI Tracker
 
+[![GovTech CI](https://github.com/Yohanneswz/charter-mark-kpi/actions/workflows/ci.yml/badge.svg)](https://github.com/Yohanneswz/charter-mark-kpi/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![Compliance](https://img.shields.io/badge/Legal%20Compliance-Proclamation%201353%2F2025-gold.svg)](docs/statutory_formulas.md)
+[![Strategy](https://img.shields.io/badge/National%20Strategy-Digital%20Ethiopia%202030-teal.svg)](https://mint.gov.et/)
+
 > **Statutory Compliance**: Built in strict accordance with the **Federal Civil Servants Proclamation No. 1353/2025** (Sections 42 & 43) and the **Digital Ethiopia 2030 (DE2030)** National Strategy.
 
 ---
@@ -7,6 +13,15 @@
 ## 🏛️ Executive Summary
 
 This sovereign e-Government system replaces subjective, paper-based annual reviews with an empirical, real-time service tracking architecture. Frontline civil servant performance is dynamically calculated using a statutory **60% Empirical Desk Performance + 40% Structured Supervisor Evaluation** formula, directly governing biennial (2-year) salary step increment eligibility (+7.5%).
+
+---
+
+## 📚 Technical Documentation & Guides
+
+* 📑 **[REST API Specification](docs/api.md)**: Full endpoint reference, request/response schemas, and authentication models.
+* ⚖️ **[Statutory Formulas & Legal Rules](docs/statutory_formulas.md)**: Mathematical definitions for 60/40 splits, SLA variances, and step increments.
+* 🛡️ **[Security Policy & Disclosures](SECURITY.md)**: Vulnerability disclosure and privacy-preserving identifier protocols.
+* 📄 **[MIT License](LICENSE)**: Open-source terms and permissions.
 
 ---
 
@@ -79,7 +94,7 @@ The system is decoupled into isolated, production-grade interfaces to prevent un
 ### 2. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/charter-mark-kpi.git
+git clone https://github.com/Yohanneswz/charter-mark-kpi.git
 cd charter-mark-kpi
 
 # Install dependencies
