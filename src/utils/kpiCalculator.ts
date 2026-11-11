@@ -72,9 +72,8 @@ export function computeObjectiveScore60(sessions: ServiceSession[], targetQuota:
   if (ratedSessions.length > 0) {
     const sum = ratedSessions.reduce((acc, curr) => acc + (curr.citizenRating || 0), 0);
     averageRating = Math.round((sum / ratedSessions.length) * 10) / 10;
-    // Normalized 1-5 scale to 15 pts: ((Avg - 1) / 4) * 15
-    const normalized = Math.max(0, Math.min(1, (averageRating - 1) / 4));
-    citizenRatingScore = Math.round(normalized * 15 * 10) / 10;
+    // Direct linear scaling of 5-star citizen rating to 15 statutory points: (Avg / 5) * 15
+    citizenRatingScore = Math.round((averageRating / 5) * 15 * 10) / 10;
   }
 
   const objectiveScore60 = Math.round((volumeEfficiencyScore + slaComplianceScore + citizenRatingScore) * 10) / 10;
