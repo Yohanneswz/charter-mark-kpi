@@ -8,7 +8,9 @@
     "server": "tsx server/server.ts",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "tsx tests/kpi_calculator.test.ts"
+    "test": "tsx tests/kpi_calculator.test.ts",
+    "db:seed": "tsx server/seed.ts",
+    "db:reset": "tsx server/seed.ts --reset"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
