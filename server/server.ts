@@ -22,16 +22,47 @@ function calculateSla(startedAt: string, completedAt: string, standardMin: numbe
   return { actualDurationMin, slaVarianceMin, metCharterSla };
 }
 
-// 1. Health check
+// 1. Health check & System Telemetry Endpoint
 app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ONLINE',
-    system: 'System 2: QR-Based Charter Mark Citizen Feedback & KPI Tracker',
-    jurisdiction: 'FDRE Civil Service Commission & Ethiopian Competency and Management Institute',
-    database: 'SQLite (WAL Active)',
-    proclamation: 'No. 1353/2025',
-    timestamp: new Date().toISOString()
-  });
+  try {
+    const tableCount: any = db.prepare("SELECT count(*) as count FROM sqlite_master WHERE type='table'").get();
+    const sessionStats: any = db.prepare(`
+      SELECT 
+        COUNT(*) as total,
+        SUM(CASE WHEN session_status = 'WAITING' THEN 1 ELSE 0 END) as waiting,
+        SUM(CASE WHEN session_status = 'IN_SERVICE' THEN 1 ELSE 0 END) as inService,
+        SUM(CASE WHEN session_status = 'COMPLETED' THEN 1 ELSE 0 END) as completed
+      FROM service_sessions
+    `).get();
+    const officerCount: any = db.prepare('SELECT count(*) as count FROM officers').get();
+
+    res.json({
+      status: 'ONLINE',
+      system: 'System 2: QR-Based Charter Mark Citizen Feedback & KPI Tracker',
+      jurisdiction: 'FDRE Civil Service Commission & Ethiopian Competency and Management Institute',
+      legalFramework: 'Federal Civil Servants Proclamation No. 1353/2025',
+      uptimeSeconds: Math.floor(process.uptime()),
+      memory: {
+        rssMb: Math.round((process.memoryUsage().rss / 1024 / 1024) * 10) / 10,
+        heapUsedMb: Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 10) / 10
+      },
+      database: {
+        engine: 'SQLite3 (WAL Active)',
+        tables: tableCount?.count || 0
+      },
+      telemetry: {
+        totalOfficers: officerCount?.count || 0,
+        totalSessions: sessionStats?.total || 0,
+        activeWaitingQueue: sessionStats?.waiting || 0,
+        inServiceCount: sessionStats?.inService || 0,
+        completedTransactions: sessionStats?.completed || 0
+      },
+      nodeVersion: process.version,
+      timestamp: new Date().toISOString()
+    });
+  } catch (err: any) {
+    res.status(500).json({ status: 'DEGRADED', error: err.message, timestamp: new Date().toISOString() });
+  }
 });
 
 // 2. Authentication
